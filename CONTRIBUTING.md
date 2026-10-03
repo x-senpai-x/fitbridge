@@ -11,11 +11,14 @@ Use Node 24 or newer.
 ```bash
 npm ci
 cp .dev.vars.example .dev.vars
+```
+
+Set a private `SETUP_CODE` in `.dev.vars`, then start the local server:
+
+```bash
 npx wrangler d1 migrations apply DB --local
 npm run dev
 ```
-
-Set a private `SETUP_CODE` in `.dev.vars` before starting the server.
 Local Wrangler uses local D1 and KV resources.
 See [architecture](docs/architecture.md) for the request paths and storage model.
 

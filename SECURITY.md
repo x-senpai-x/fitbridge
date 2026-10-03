@@ -5,7 +5,7 @@
 Use [GitHub private vulnerability reporting](https://github.com/x-senpai-x/fitbridge/security/advisories/new).
 Do not place vulnerabilities, credentials, pairing QR codes, recovery codes, or health records in a public issue.
 Include the affected release, reproduction steps with synthetic data, impact, and a proposed mitigation if available.
-An acknowledgement target is seven days; this is a volunteer project and not a guaranteed service-level agreement.
+We aim to acknowledge reports within seven days.
 
 ## Supported versions
 
