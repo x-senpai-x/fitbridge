@@ -36,5 +36,3 @@ Disconnect the assistant and revoke its connector first.
 Delete your Worker, D1 database, and KV namespace in your own Cloudflare dashboard when removing the installation.
 Uninstall or disable the companion's webhook configuration and remove Health Connect permissions if no longer needed.
 Deleting fitbridge does not delete records already sent to an assistant or records held on the phone.
-
-This statement describes software behavior; it does not replace your providers' terms or a jurisdiction-specific legal assessment.

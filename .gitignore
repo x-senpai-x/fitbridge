@@ -11,3 +11,4 @@ test-results/
 *.local.jsonc
 coverage/
 .DS_Store
+worker-configuration.d.ts

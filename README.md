@@ -1,108 +1,89 @@
-# fitbridge for Health Connect
+# fitbridge
 
-Your Android health records, available to ChatGPT and Claude through a service you host in your own free Cloudflare account.
-The maintainer has no access to your instance or your health data.
+Connect Android Health Connect to ChatGPT and Claude through a service you host in your own Cloudflare account.
+Ask about your sleep, workouts, activity, and health trends using nine read-only MCP tools.
+
+**Beta · Android 14+ · Requires Life Dashboard Companion**
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/x-senpai-x/fitbridge)
 
-[Setup guide](https://x-senpai-x.github.io/fitbridge/) · [Troubleshooting](docs/runbook.md#troubleshooting) · [Privacy](docs/privacy.md) · [Security](SECURITY.md)
+[Setup guide](https://x-senpai-x.github.io/fitbridge/) · [Troubleshooting](docs/runbook.md#troubleshooting) · [Updates and backups](docs/maintenance.md)
 
-**Public beta.**
-The original Android-to-ChatGPT flow has been tested by the owner with real Fitbit records.
-The new passkey and pairing flow is checked with synthetic records and a browser authenticator.
-A ten-minute setup with a first-time user has not been measured.
+## How it works
 
 ```text
-Wearable → Health Connect → Life Dashboard Companion
-                                  ↓ signed webhook
-                         Your Cloudflare Worker
-                           D1 + OAuth + MCP
-                                  ↓ read-only
-                           ChatGPT or Claude
+Wearable app → Health Connect → Life Dashboard Companion
+                                          ↓
+                               Your Cloudflare Worker
+                                          ↓
+                                   ChatGPT or Claude
 ```
 
-## Start here
+[Life Dashboard Companion](https://github.com/owen282000/life-dashboard-companion-app) reads the records you permit on your phone and sends signed updates to fitbridge.
+fitbridge stores them in your Cloudflare account and lets an assistant read them after you authorize access.
+The companion is a separate Android app that you install yourself.
 
-You need Android 14+, a wearable/app that actually writes the relevant records to Health Connect, a free Cloudflare account, a GitHub account, and an assistant plan supporting custom MCP connections.
-Fitbit is the tested source.
-Other Health Connect sources can use the same receiver, but their device behavior and exported metrics are not yet verified here.
-iPhone is experimental and is not part of the supported setup path.
+## Get started
 
-1. [Generate a private setup code](https://x-senpai-x.github.io/fitbridge/#setup-code), or create one with your password manager.
-2. Click **Deploy to Cloudflare** and enter that value as `SETUP_CODE`.
-   The template creates your D1 database and OAuth KV namespace.
-   Keep the Workers Free plan selected and retain the generated binding IDs in your copy.
-3. Open your new Worker URL, enter the setup code, register a passkey, and save the recovery code.
-4. Save your time zone and primary data source before syncing.
-   Install [Life Dashboard Companion 1.21.2](https://github.com/owen282000/life-dashboard-companion-app/releases/tag/1.21.2), then scan the private pairing QR with its pairing scanner.
-5. Select the 13 supported types shown on the page, keep raw resolution, and run a real sync.
-   The companion's unsigned onboarding test ping is expected to fail.
-6. Copy the MCP URL into ChatGPT Developer mode or Claude, authenticate with your passkey, and approve read-only access.
+You need:
 
-Ask: **“How did my sleep and HRV trend over the last 30 days?”**
-The assistant should start with `get_overview` to check whether those records exist.
-See the [full runbook](docs/runbook.md) for Android permissions, APK verification, backfills, and terminal setup.
+- Android 14+ and a wearable app that writes records to Health Connect.
+- GitHub and Cloudflare accounts.
+- ChatGPT with Developer mode, or Claude with custom MCP connections.
 
-<img src="docs/site/setup-preview.png" width="390" alt="Mobile owner setup screen with no private codes or health data">
+1. [Generate a setup code](https://x-senpai-x.github.io/fitbridge/#setup-code) and save it privately.
+2. Click **Deploy to Cloudflare** and enter the code as `SETUP_CODE`.
+   Keep the Workers Free plan selected.
+3. Open your Worker URL, create a passkey using the setup code, and save your recovery code.
+4. Set your time zone and data source, then install [Life Dashboard Companion](https://github.com/owen282000/life-dashboard-companion-app/releases/tag/1.21.2) and pair it using the QR on your fitbridge page.
+5. Select the 13 record types listed on that page and run a sync.
+6. Add the MCP URL to your assistant and approve read-only access.
 
-## What it provides
+The [full setup guide](docs/runbook.md) covers permissions, record selection, and assistant connections.
+The companion's **Send Test Ping** is unsigned and will fail; use a real sync after pairing.
 
-Nine read-only MCP tools: overview, daily summaries, sleep, workouts, intraday series, trends, correlation, search, and fetch.
-Supported raw types are heart rate, HRV, resting heart rate, respiratory rate, oxygen saturation, skin temperature, sleep, exercise, steps, distance, total calories, VO2 max, and weight.
-Missing measurements remain unknown rather than becoming zero.
-Fitbit's proprietary sleep score, readiness, cardio load, and stress scores are not reconstructed.
-Heart-rate zones and active zone minutes are labeled estimates.
+Try asking:
 
-The Worker verifies HMAC-SHA256 signatures before accepting phone data.
-Browser setup is protected by a passkey, required user verification, and a private bootstrap code.
-OAuth consent names the assistant and the redirect URI before granting access.
-New clients can use CIMD; DCR remains available for compatibility.
-The setup page provides pairing, recent signed-sync status, key rotation, recovery-code regeneration, and redacted diagnostics.
+> How did my sleep and HRV trend over the last 30 days?
 
-## Cost and limits
+## Available data
 
-fitbridge has no fee and uses no paid AI API.
-Your chosen assistant may require a paid subscription.
-The default deployment targets Workers Free, D1, and KV; it does not automatically upgrade an account.
-Free quotas can pause ingestion, especially during historical backfills or unusual traffic.
-Backfills pause at 70,000 tracked daily row writes and live syncs at 90,000, leaving headroom under D1's free quota.
-These guards are approximate: migration/manual writes and platform overhead are not all counted.
-See [quotas and updates](docs/maintenance.md).
+- Heart rate, HRV, resting heart rate, respiratory rate, oxygen saturation, and skin temperature.
+- Sleep sessions and workouts.
+- Steps, distance, total calories, VO2 max, and weight.
+- Daily summaries, trends, and correlations across recorded metrics.
 
-## Privacy and security
+Availability depends on what your source app writes to Health Connect.
+Missing measurements remain unknown.
+Heart-rate zones are estimates; fitbridge does not recreate Fitbit's sleep score, readiness, cardio load, or stress scores.
 
-Your Cloudflare account stores the records and signing key.
-The maintainer operates no shared data collection endpoint.
-Your selected assistant receives data returned by the tools you authorize it to use.
-Review its retention and training settings before connecting.
-Public documentation and tests use composed or synthetic fixtures, not the owner's captured payloads.
-Persistent Worker logs are disabled by default; do not share unredacted live logs or pairing/recovery codes.
-Read the [privacy statement](docs/privacy.md), [threat model](docs/threat-model.md), and [reporting policy](SECURITY.md).
+The setup guide covers Fitbit.
+Other Health Connect sources may export different records or units.
+iPhone is not currently supported.
 
-fitbridge is a general wellness tool, not a medical device or a source of medical advice.
-Fitbit, Health Connect, ChatGPT, Claude, and Cloudflare are names of the products it works with.
-This project is independent and is not endorsed by those companies or by other applications named FitBridge.
+## Privacy and cost
 
-## Develop and contribute
+Your instance stores data in your own Cloudflare account.
+The maintainer receives no health data or telemetry.
+An assistant you authorize can read all stored health records, so review its retention and training settings before connecting.
+See the [privacy statement](docs/privacy.md) and [security policy](SECURITY.md).
 
-```bash
-npm ci
-npm run build
-npm run typecheck
-npm test
-npm run smoke
-npx playwright install chromium
-npm run test:browser
-```
+fitbridge is free and uses no paid AI API.
+Your assistant may require a subscription.
+Cloudflare's free quotas can pause syncing; large history imports may take several days.
+See [quotas and maintenance](docs/maintenance.md#quotas).
 
-Use Node 24 or newer.
-Copy `.dev.vars.example` to `.dev.vars` and set a private local setup code before `npm run dev`.
-Tests use local workerd/D1 and synthetic data.
-See [CONTRIBUTING.md](CONTRIBUTING.md), [design](docs/design.md), [shipping plan](docs/shipping-plan.md), and [release evidence](docs/release-readiness.md).
+fitbridge is a general wellness tool, not a medical device.
+It is independent of Fitbit, Google, OpenAI, Anthropic, and Cloudflare.
 
-## License and companion
+## Contributing
 
-fitbridge is [MIT licensed](LICENSE).
-The separately installed [Life Dashboard Companion](https://github.com/owen282000/life-dashboard-companion-app) is maintained by Owen Vogelaar and is not bundled or modified here.
-Copied exporter documentation and derived fixtures retain its MIT notice.
-Dependency notices are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md) for local development and [architecture](docs/architecture.md) for the code structure.
+For setup problems, [open an issue](https://github.com/x-senpai-x/fitbridge/issues/new/choose) with redacted diagnostics.
+Report vulnerabilities through [private security reporting](https://github.com/x-senpai-x/fitbridge/security/advisories/new).
+
+## License
+
+[MIT](LICENSE).
+Life Dashboard Companion is maintained separately by Owen Vogelaar and is not bundled with fitbridge.
+Dependency and fixture notices are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and [test/fixtures/LICENSE](test/fixtures/LICENSE).

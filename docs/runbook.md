@@ -1,19 +1,19 @@
-# Setup and support
+# Setup guide
 
-## Browser setup
+## 1. Deploy fitbridge
 
 Use the [public setup guide](https://x-senpai-x.github.io/fitbridge/) and Deploy to Cloudflare button.
 Generate a private random setup code in your browser or password manager and enter it as SETUP_CODE during deployment.
 The public generator uses browser crypto and does not send the value anywhere.
 Keep your Cloudflare account on Workers Free.
 The deployment provisions D1/KV and applies migrations through the DB binding.
-After deployment, open the printed workers.dev URL.
+After deployment, open your Worker URL.
 Enter the setup code, create a passkey, and save the recovery code in your password manager.
 Save your time zone before the first sync.
 Select the primary Health Connect source, normally com.fitbit.FitbitMobile for Fitbit.
 For another source, use its actual data-origin package as shown in exported records.
 
-## Android companion
+## 2. Pair your Android phone
 
 Install [Life Dashboard Companion 1.21.2](https://github.com/owen282000/life-dashboard-companion-app/releases/tag/1.21.2) from its own maintainer.
 On the wearable's app, enable writing the available categories to Health Connect.
@@ -52,45 +52,36 @@ The onboarding Send Test Ping lacks a signing key and is expected to fail with 4
 Finish pairing and trigger a real sync instead.
 The setup page confirms Phone connected only after a successfully signed live/backfill payload, not an onboarding ping.
 Start with the most recent seven days before importing long history.
-Check overview's coverage and rejected-record warnings before a large backfill.
+Ask your assistant about data coverage before importing more history.
 
-### Optional APK verification
+## 3. Connect your assistant
 
-Use Android's apksigner and GitHub CLI if you want to verify the APK before sideloading.
-The upstream project publishes its signing fingerprint and GitHub attestations.
-Download the selected release from the upstream link, then run:
+### ChatGPT
 
-```bash
-apksigner verify --print-certs app-release.apk
-gh attestation verify app-release.apk --repo owen282000/life-dashboard-companion-app
-```
-
-Compare the certificate SHA-256 with [upstream SECURITY.md](https://github.com/owen282000/life-dashboard-companion-app/blob/main/SECURITY.md).
-An attestation identifies a build's provenance; it is not a malware audit.
-
-## Assistant connection
-
-ChatGPT: on the web, enable Developer mode and add your instance's /mcp URL with OAuth.
+On the web, enable Developer mode and add your fitbridge page's MCP URL with OAuth.
 Use your passkey in the opened browser, then check the client name and full redirect URI before allowing read access.
 Review Data controls, including Improve the model for everyone, before sharing health data.
 Select the connector in a conversation and ask about data coverage first.
 
-Claude Code:
+### Claude
+
+On Claude.ai, add your MCP URL through custom connectors if your plan supports them.
+For Claude Code:
 
 ```bash
 claude mcp add --transport http fitbridge https://YOUR-WORKER.workers.dev/mcp
 ```
 
 Run /mcp and authenticate in the opened browser.
-Codex can also exercise both client registration paths:
+### Codex
+
+Add your instance and sign in:
 
 ```bash
 codex mcp add fitbridge --url https://YOUR-WORKER.workers.dev/mcp
-codex mcp login fitbridge --oauth-client-registration cimd
+codex mcp login fitbridge
 ```
 
-Use dcr instead of cimd to test dynamic registration when needed.
-The provider supports both, but individual assistant behavior and plan eligibility can change.
 
 ## Recovery and rotation
 
@@ -104,7 +95,7 @@ Old signed payloads get 401 until the phone has the replacement key.
 You can regenerate a lost recovery code after signing in with your passkey.
 Both actions require a login within the last five minutes; sign out and sign in again when prompted.
 Without a passkey or recovery code, Cloudflare account access is the administrative recovery boundary.
-Back up D1 first and use the dedicated maintenance procedure rather than deleting health data to regain ownership.
+See [administrative recovery](maintenance.md#administrative-passkey-recovery) if both are lost.
 
 ## Terminal deployment
 
@@ -117,7 +108,7 @@ scripts/deploy.sh
 The script creates missing resources, preserves existing secrets, applies additive migrations, and deploys.
 Its generated bootstrap code is saved privately under .secrets/setup-code.
 Read that local file to claim the instance, then delete it after saving a recovery code.
-Do not run it against an existing personal deployment without first reviewing the target configuration.
+Check the target Worker name and resource IDs before running the script against an existing installation.
 For a Deploy-button copy, retain its provisioned resource IDs and configured production branch.
 
 ## Troubleshooting
@@ -132,7 +123,7 @@ For a Deploy-button copy, retain its provisioned resource IDs and configured pro
 | No overnight data | Check Health Connect background/history permissions, battery restrictions, and wearable-app sync |
 | Active Calories rejected | Turn it off and keep Total Calories enabled |
 | Bucketed data rejected | Change each selected type to raw resolution |
-| Time-zone change refused | Dates are already stored; follow the reindex procedure in maintenance.md |
+| Time-zone change refused | Dates are already stored; see [time-zone changes](maintenance.md#time-zone-changes) |
 | Wrong or empty source metrics | Verify the source package, save it, and let dirty days recompute |
 | Passkey fails after domain change | Use recovery to register on the new hostname |
 | Assistant's access expires after recovery | Reconnect and approve a new grant |
