@@ -7,13 +7,16 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: pages
+  group: documentation
   cancel-in-progress: true
 jobs:
   build:
     if: github.repository == 'x-senpai-x/fitbridge'
     runs-on: ubuntu-24.04
     timeout-minutes: 5
+    permissions:
+      contents: read
+      pages: read
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
