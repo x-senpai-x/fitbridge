@@ -1,0 +1,19 @@
+name: Feature or source support
+description: Propose a use case or report source compatibility
+labels: [enhancement]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: Use case
+      description: Describe the problem without personal health values or identifiers.
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Device, app, and Health Connect record types involved
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Suggested behavior

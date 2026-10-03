@@ -1,0 +1,13 @@
+node_modules/
+.wrangler/
+.dev.vars
+.secrets/
+.env
+public/
+playwright-report/
+test-results/
+.env.*
+!.env.example
+*.local.jsonc
+coverage/
+.DS_Store

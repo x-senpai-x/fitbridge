@@ -1,0 +1,4 @@
+# Choose a private random value of 24 to 256 characters before deploying.
+# Generate one at https://x-senpai-x.github.io/fitbridge/ or use your password manager.
+# This proves ownership only during first registration; it cannot recover an existing owner.
+SETUP_CODE=""

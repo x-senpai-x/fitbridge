@@ -1,0 +1,30 @@
+name: Propose upstream updates
+on:
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+permissions: {}
+concurrency:
+  group: upstream-sync
+  cancel-in-progress: false
+jobs:
+  sync:
+    if: github.repository != 'x-senpai-x/fitbridge'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - uses: AndreasAugustin/actions-template-sync@6e1d0089686f8940604fc15baae62367bf6ee860 # v2.6.0
+        with:
+          source_repo_path: x-senpai-x/fitbridge
+          source_branch: main
+          upstream_branch: main
+          is_allow_hooks: 'false'
+          is_force_push_pr: 'false'
+          pr_title: 'Review fitbridge upstream updates'
+          pr_body: 'Review releases, migrations, and configuration changes before merging. Your Wrangler configuration is preserved. Run the documented checks; bot-created PRs may require a manual workflow run.'

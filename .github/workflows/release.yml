@@ -1,0 +1,45 @@
+name: Release
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing, reviewed version tag
+        type: string
+        required: true
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          ref: ${{ inputs.tag }}
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm run build && npm run typecheck && npm test
+  publish:
+    needs: package
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          ref: ${{ inputs.tag }}
+          persist-credentials: false
+      - name: Publish reviewed source
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?$ ]] || exit 1
+          git archive --format=tar.gz --prefix=fitbridge/ HEAD > fitbridge-source.tar.gz
+          sha256sum fitbridge-source.tar.gz > SHA256SUMS
+          gh release create "$RELEASE_TAG" --verify-tag --prerelease --title "$RELEASE_TAG" --notes-file docs/releases/beta.md fitbridge-source.tar.gz SHA256SUMS

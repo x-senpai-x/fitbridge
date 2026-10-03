@@ -1,0 +1,26 @@
+name: Setup problem
+description: Deployment, pairing, or assistant connection problem
+labels: [setup]
+body:
+  - type: markdown
+    attributes:
+      value: 'Never attach signing keys, recovery codes, QR screenshots, health payloads, account IDs, or raw logs. Use Preview diagnostics in your setup page.'
+  - type: textarea
+    id: problem
+    attributes:
+      label: What failed and what did you expect?
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Android, companion, browser, and fitbridge versions
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Reviewed redacted diagnostics
+      description: Review the setup page summary before pasting it.
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps and troubleshooting tried

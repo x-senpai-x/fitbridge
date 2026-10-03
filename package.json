@@ -1,0 +1,58 @@
+{
+  "name": "fitbridge",
+  "version": "0.2.0-beta.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npm run build && wrangler dev",
+    "types": "wrangler types --strict-vars=false",
+    "typecheck": "wrangler types --strict-vars=false --check && tsc -p tsconfig.json && tsc -p tsconfig.node.json && tsc -p tsconfig.browser.json",
+    "test": "vitest run",
+    "smoke": "npm run build && node scripts/smoke.ts",
+    "build": "node scripts/build.ts",
+    "deploy": "npm run build && wrangler d1 migrations apply DB --remote && wrangler deploy",
+    "test:browser": "playwright test",
+    "check": "npm run build && npm run typecheck && npm test && npm run test:browser"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "1.3.6",
+    "@modelcontextprotocol/client": "2.3.0",
+    "@playwright/test": "1.63.0",
+    "@types/node": "24.19.1",
+    "@types/qrcode": "1.5.6",
+    "esbuild": "0.28.2",
+    "typescript": "7.0.2",
+    "vitest": "4.1.11",
+    "wrangler": "4.147.0"
+  },
+  "dependencies": {
+    "@cloudflare/workers-oauth-provider": "1.2.1",
+    "@modelcontextprotocol/server": "2.3.0",
+    "@simplewebauthn/browser": "13.3.0",
+    "@simplewebauthn/server": "13.3.3",
+    "qrcode": "1.5.4",
+    "zod": "4.6.5"
+  },
+  "license": "MIT",
+  "description": "Self-hosted Health Connect to ChatGPT and Claude bridge on Cloudflare Workers",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/x-senpai-x/fitbridge.git"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "cloudflare": {
+    "bindings": {
+      "DB": {
+        "description": "Your private health records, daily metrics, owner passkey, and setup state."
+      },
+      "OAUTH_KV": {
+        "description": "OAuth clients and grants for your own assistants."
+      },
+      "SETUP_CODE": {
+        "description": "Private random setup code, at least 24 characters. Generate locally at https://x-senpai-x.github.io/fitbridge/ and save it before deploying."
+      }
+    }
+  }
+}

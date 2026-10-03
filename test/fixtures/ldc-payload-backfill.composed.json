@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-09-23T09:15:02.774Z",
+  "app_version": "1.21.2",
+  "source": "health_connect",
+  "sequence": 1071,
+  "backfill": true,
+  "window_start": "2026-06-25T09:14:58.120Z",
+  "window_end": "2026-06-28T09:14:58.120Z",
+  "window_complete": true,
+  "daily_totals": [
+    {
+      "date": "2026-06-25",
+      "steps": 10221,
+      "distance_meters": 7650.0,
+      "total_calories": 2804.6
+    }
+  ],
+  "resting_heart_rate": [
+    {
+      "bpm": 57,
+      "time": "2026-06-26T00:00:00Z",
+      "uuid": "1f3b5d7f-9a1c-3e5b-8d7f-9a1c3e5b7d98",
+      "source": "com.fitbit.FitbitMobile"
+    }
+  ]
+}

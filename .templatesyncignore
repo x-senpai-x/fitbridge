@@ -1,0 +1,4 @@
+wrangler.jsonc
+README.md
+.github/workflows/upstream-sync.yml
+.templatesyncignore
