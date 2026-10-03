@@ -8,6 +8,8 @@ No captured owner health payloads, account credentials, or personal deployment I
 
 | Command or check | Result |
 |---|---|
+| Fresh public git clone, npm ci, npm run build, npm run typecheck | Lockfile install, assets, and strict types passed independently |
+| GitHub Checks workflow | Both Build and test and Secrets and workflows passed on Linux for commit 8c0ceb9 |
 | npm run build | Self-contained browser assets, no CDN requests |
 | npm run typecheck | Wrangler binding types and strict Worker/Node/browser TypeScript passed |
 | npm test | 16 files, 211 tests passed in local workerd with D1 migrations |
@@ -61,3 +63,8 @@ Use Node 24 or newer.
 Run npm ci, npm run build, npm run typecheck, npm test, npm run smoke, npx playwright install chromium, and npm run test:browser.
 For a remote trial, first create separate resources and an empty owner database, set FITBRIDGE_TEST_URL and FITBRIDGE_TEST_SETUP_CODE privately, and never point the browser suite at an existing user's instance.
 Public CI repeats local verification without Cloudflare credentials or paid AI API keys.
+
+GitHub verification: https://github.com/x-senpai-x/fitbridge/actions/runs/37147942609
+
+The repository has secret scanning, push protection, private vulnerability reporting, and Dependabot security updates enabled.
+Dependency update PRs are reviewable proposals and are not automatically merged.
