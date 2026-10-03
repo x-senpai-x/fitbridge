@@ -51,6 +51,9 @@ Scan changes for secrets with `gitleaks git --redact --config .gitleaks.toml`.
 - Keep each user's data in their own account; do not add telemetry or paid service dependencies.
 - Keep documentation focused on current behavior, with one sentence per line.
 
+Dependency updates require review before merging.
+Keep Node types aligned with the supported Node version, and update Vitest together with its Cloudflare plugin.
+
 Describe the problem, resulting behavior, and checks run in your pull request.
 Include migration or configuration changes when relevant.
 Contributions use the project's MIT license.
