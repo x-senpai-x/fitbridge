@@ -1,21 +1,69 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Connect Android Health Connect to ChatGPT and Claude through your own free Cloudflare Worker.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Connect Android Health Connect to ChatGPT and Claude through your own Cloudflare Worker.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
-<title>fitbridge for Health Connect</title><link rel="stylesheet" href="style.css"><script src="setup-code.js" defer></script>
+<title>fitbridge: Health Connect for ChatGPT and Claude</title>
+<link rel="stylesheet" href="style.css">
+<script src="setup-code.js" defer></script>
 </head>
-<body><header><a href="./" class="brand">fitbridge <span>PUBLIC BETA</span></a><a href="https://github.com/x-senpai-x/fitbridge">Source ↗</a></header>
-<main><section class="hero"><p class="eyebrow">YOUR HEALTH DATA. YOUR CLOUDFLARE ACCOUNT.</p><h1>A private bridge<br>to your assistant.</h1><p class="lead">Ask ChatGPT or Claude about your sleep, activity, and recovery.<br>Android Health Connect supplies the records. You own the service.</p>
-<div class="actions"><a class="button" href="#start">Set up your bridge</a><a href="https://github.com/x-senpai-x/fitbridge/blob/main/docs/privacy.md">How your data travels ↗</a></div>
-<p class="hint">No fitbridge fee. No maintainer backend. Your assistant's plan requirements still apply.</p>
-<div class="path" aria-label="Data path"><span>Health Connect</span><b>→</b><span>Your Worker</span><b>→</b><span>Your assistant</span></div></section>
-<section id="start"><p class="eyebrow">BEFORE YOU START</p><h2>What you'll need</h2><p>Android 14+, a wearable app that writes to Health Connect, GitHub and free Cloudflare accounts, and an assistant that supports custom MCP connections.</p><p>Fitbit is the tested source. Other sources and iOS need further device validation.</p></section>
-<section id="setup-code"><p class="eyebrow">01 / SECURE YOUR DEPLOYMENT</p><h2>Generate your private setup code</h2><p>This page generates 32 random bytes using your browser's crypto API. The code stays in this page and is never sent to the maintainer.</p><button id="generate">Generate setup code</button><div id="generated" hidden><label for="code">Save this privately, then enter it as SETUP_CODE in Cloudflare.</label><input id="code" readonly autocomplete="off" spellcheck="false"><button id="copy">Copy code</button><button id="hide" class="secondary">Clear from this page</button></div><p id="status" role="status" aria-live="polite"></p></section>
-<section><p class="eyebrow">02 / DEPLOY YOUR COPY</p><h2>One Worker, your own account</h2><p>The Deploy button copies the repository into your GitHub account and provisions D1 and KV. Enter your private setup code when asked. Keep the Workers Free plan selected.</p><a class="button" href="https://deploy.workers.cloudflare.com/?url=https://github.com/x-senpai-x/fitbridge" rel="noreferrer">Deploy to Cloudflare ↗</a><p>Once the build finishes, open your new Worker URL. Enter the setup code, create a passkey, and save the recovery code in a password manager.</p><p class="hint">A passkey is bound to this hostname. Recovery lets you register a replacement after moving domains.</p></section>
-<section><p class="eyebrow">03 / PAIR YOUR PHONE</p><h2>Scan once. Then run a signed sync.</h2><p>Save your time zone before importing any records. Install the separately maintained <a href="https://github.com/owen282000/life-dashboard-companion-app/releases/tag/1.21.2">Life Dashboard Companion 1.21.2</a>, grant read, history, and background permissions, and use its pairing scanner on your setup page's private QR.</p><p>The QR fills the URL and signing key together. Select the 13 supported types at raw resolution, as shown on your setup page. Keep Active Calories and Receive off.</p><aside>The companion's onboarding test ping is unsigned and is expected to fail. Finish pairing and trigger a real sync; look for “Phone connected” on your setup page.</aside><p>Start with seven days. Long backfills can take several days because your instance stays on the free write budget.</p></section>
-<section><p class="eyebrow">04 / CONNECT YOUR ASSISTANT</p><h2>Copy the MCP URL and approve read access</h2><p>For ChatGPT on the web, enable Developer mode and add your setup page's MCP URL with OAuth. Sign in using your passkey and check the assistant's name and redirect URI before allowing access.</p><p>For Claude Code, your setup page includes the exact connection command. Claude.ai users can add the URL through custom connectors when their plan supports them.</p><blockquote>“What data do you have for the last seven days, and how did my sleep trend?”</blockquote><p>Review your assistant's data controls before connecting. Tool responses are shared with that assistant.</p></section>
-<section class="resources"><h2>Keep it running</h2><a href="https://github.com/x-senpai-x/fitbridge/blob/main/docs/runbook.md">Detailed setup and troubleshooting ↗</a><a href="https://github.com/x-senpai-x/fitbridge/blob/main/docs/maintenance.md">Updates, backups, and quotas ↗</a><a href="https://github.com/x-senpai-x/fitbridge/blob/main/docs/release-readiness.md">What was tested ↗</a><a href="https://github.com/x-senpai-x/fitbridge/issues/new/choose">Report a problem with redacted diagnostics ↗</a><a href="https://github.com/x-senpai-x/fitbridge/security/advisories/new">Report a security issue privately ↗</a></section>
-</main><footer>Independent open-source project. General wellness only, not a medical device.<br>MIT licensed. No analytics, cookies, CDN scripts, or form submissions on this page.<br>The new setup is in beta; a first-time ten-minute trial has not yet been measured.</footer></body></html>
+<body>
+<header><a href="./" class="brand">fitbridge <span>BETA</span></a><a href="https://github.com/x-senpai-x/fitbridge">GitHub ↗</a></header>
+<main>
+<section class="hero">
+<p class="eyebrow">ANDROID HEALTH CONNECT</p>
+<h1>Ask your assistant<br>about your health data.</h1>
+<p class="lead">Connect your sleep, workouts, and activity to ChatGPT or Claude.<br>Host fitbridge in your own Cloudflare account.</p>
+<div class="actions"><a class="button" href="#start">Get started</a><a href="https://github.com/x-senpai-x/fitbridge/blob/main/docs/privacy.md">Privacy ↗</a></div>
+<p class="hint">Free and open source. Your assistant may require a subscription.</p>
+<div class="path" aria-label="Data path"><span>Health Connect</span><b>→</b><span>Companion app</span><b>→</b><span>Your fitbridge</span><b>→</b><span>Your assistant</span></div>
+</section>
+<section id="start">
+<h2>What you'll need</h2>
+<ul><li>Android 14+ and a wearable app that writes to Health Connect.</li><li><a href="https://github.com/owen282000/life-dashboard-companion-app/releases/tag/1.21.2">Life Dashboard Companion</a>, installed separately on your phone.</li><li>GitHub and free Cloudflare accounts.</li><li>ChatGPT with Developer mode, or Claude with custom MCP connections.</li></ul>
+<p>The guide covers Fitbit. Records available from other sources may vary. iPhone is not currently supported.</p>
+</section>
+<section id="setup-code">
+<p class="eyebrow">STEP 1</p><h2>Generate a setup code</h2>
+<p>This protects your instance's first registration. The code is generated in your browser and is never sent from this page.</p>
+<button id="generate">Generate setup code</button>
+<div id="generated" hidden><label for="code">Save this privately, then enter it as SETUP_CODE in Cloudflare.</label><input id="code" readonly autocomplete="off" spellcheck="false"><button id="copy">Copy code</button><button id="hide" class="secondary">Clear from this page</button></div>
+<p id="status" role="status" aria-live="polite"></p>
+</section>
+<section>
+<p class="eyebrow">STEP 2</p><h2>Deploy fitbridge</h2>
+<p>The button copies the repository into your GitHub account and creates the storage in Cloudflare. Enter your setup code when asked and keep the Workers Free plan selected.</p>
+<a class="button" href="https://deploy.workers.cloudflare.com/?url=https://github.com/x-senpai-x/fitbridge" rel="noreferrer">Deploy to Cloudflare ↗</a>
+<p>After deployment, open your Worker URL. Enter the setup code, create a passkey, and save the recovery code in your password manager.</p>
+<p class="hint">Keep the recovery code if you move to a custom domain or lose your passkey.</p>
+</section>
+<section>
+<p class="eyebrow">STEP 3</p><h2>Pair your phone</h2>
+<p>Save your time zone and data source on your fitbridge page before importing records.</p>
+<p>Install <a href="https://github.com/owen282000/life-dashboard-companion-app/releases/tag/1.21.2">Life Dashboard Companion 1.21.2</a> and allow Health Connect read, history, and background access. Set its Android battery usage to Unrestricted.</p>
+<p>Scan the private pairing QR with the companion's pairing scanner, or use the pairing link on the same phone. This fills the webhook URL and signing key.</p>
+<p>Select the 13 record types shown on your fitbridge page at raw resolution. Keep Active Calories and Receive off.</p>
+<aside>The companion's Send Test Ping is unsigned and will fail. Run a real sync after pairing and look for “Phone connected” on your fitbridge page.</aside>
+<p>Start with seven days. Large history imports may take several days because of Cloudflare's free quotas.</p>
+</section>
+<section>
+<p class="eyebrow">STEP 4</p><h2>Connect your assistant</h2>
+<p>For ChatGPT on the web, enable Developer mode and add your fitbridge page's MCP URL with OAuth. Sign in with your passkey and approve read-only access.</p>
+<p>For Claude Code, use the command shown on your fitbridge page. For Claude.ai, add the URL through custom connectors if your plan supports them.</p>
+<blockquote>How did my sleep and HRV trend over the last 30 days?</blockquote>
+<p>An authorized assistant can read all stored health records. Review its retention and training settings before connecting.</p>
+</section>
+<section class="resources">
+<h2>Help and maintenance</h2>
+<a href="https://github.com/x-senpai-x/fitbridge/blob/main/docs/runbook.md">Setup and troubleshooting ↗</a>
+<a href="https://github.com/x-senpai-x/fitbridge/blob/main/docs/maintenance.md">Updates, backups, and quotas ↗</a>
+<a href="https://github.com/x-senpai-x/fitbridge/issues/new/choose">Report a problem ↗</a>
+<a href="https://github.com/x-senpai-x/fitbridge/security/advisories/new">Report a security issue privately ↗</a>
+</section>
+</main>
+<footer>MIT licensed. Independent of Fitbit, Google, OpenAI, Anthropic, and Cloudflare.<br>General wellness only, not a medical device.</footer>
+</body>
+</html>

@@ -38,7 +38,6 @@ The native limiter is location-local and approximate; the D1 daily caps are atom
 Free quotas and CPU limits may stop service under unusually heavy use.
 The receiver does not establish clinical accuracy or prove that another wearable exports the same metrics.
 Changing a custom domain changes WebAuthn's relying-party ID and requires recovery/re-registration.
-Do not advertise this review or the test suite as a security certification.
 
 Owner mutations bind the current owner version and session validity inside their SQL update to prevent stale-session races.
 The first import freezes the time zone before record writes, so concurrent setup cannot mix date conventions.

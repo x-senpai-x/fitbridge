@@ -2,7 +2,6 @@
 
 Generated from the installed lockfile dependencies with license-checker-rseidelsohn 5.0.1.
 fitbridge itself is covered by the root LICENSE.
-Development-only packages are listed separately in docs/dependency-licenses.md.
 
 ## @cloudflare/workers-oauth-provider@1.2.1
 

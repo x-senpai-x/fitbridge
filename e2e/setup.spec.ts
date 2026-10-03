@@ -12,7 +12,7 @@ test('owner setup, signed ingest, passkey OAuth, redaction, recovery and revoked
   const code = process.env.FITBRIDGE_TEST_SETUP_CODE ?? 'local-browser-test-setup-code-never-deploy';
   const origin = baseURL!;
   await page.goto('/setup');
-  await expect(page.getByRole('heading', {name:'Create your owner passkey'})).toBeVisible();
+  await expect(page.getByRole('heading', {name:'Create your passkey'})).toBeVisible();
   await page.locator('#setup-code').fill('wrong-code');
   await page.locator('#register-button').click();
   await expect(page.locator('#message')).toContainText('Setup code refused');

@@ -1,15 +1,17 @@
 # Changelog
 
+## 0.2.0-beta.2 · 2026-10-04
+
+- Simplified setup instructions, README, and website.
+- Added a contributor architecture guide.
+- Clarified the Android companion requirement and current platform limits.
+- Updated setup-page labels and help text.
+- Generated Worker types during type checking instead of committing generated declarations.
+
 ## 0.2.0-beta.1 · 2026-10-04
 
-- First public self-hosted beta, published with fresh history.
-- Browser owner setup with user-verified passkeys, bootstrap protection, and recovery.
-- Private companion pairing QR, live signed-sync status, settings, and redacted diagnostics.
-- Recovery-code regeneration and separate phone-signing-key rotation.
-- Version-bound MCP access and explicit read-scope enforcement.
-- Free-plan authentication and dynamic-registration quota guards.
-- Deploy button, additive D1 migration, documentation, and release maintenance workflows.
-- Retained the original nine read-only tools and optional Google compatibility mode.
-
-The previous personal implementation was tested by its owner on Android and ChatGPT with real Fitbit records.
-The public setup is a new flow and does not yet have a timed first-time-user study or physical-device verification of its pairing UI.
+- Self-hosted Health Connect bridge with nine read-only MCP tools.
+- Passkey setup, recovery codes, and OAuth consent.
+- Companion pairing QR, sync status, settings, and redacted diagnostics.
+- Phone signing-key rotation and recovery-code regeneration.
+- Cloudflare deploy button, quota guards, and update workflow.

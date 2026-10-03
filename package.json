@@ -1,12 +1,12 @@
 {
   "name": "fitbridge",
-  "version": "0.2.0-beta.1",
+  "version": "0.2.0-beta.2",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "npm run build && wrangler dev",
     "types": "wrangler types --strict-vars=false",
-    "typecheck": "wrangler types --strict-vars=false --check && tsc -p tsconfig.json && tsc -p tsconfig.node.json && tsc -p tsconfig.browser.json",
+    "typecheck": "wrangler types --strict-vars=false && tsc -p tsconfig.json && tsc -p tsconfig.node.json && tsc -p tsconfig.browser.json",
     "test": "vitest run",
     "smoke": "npm run build && node scripts/smoke.ts",
     "build": "node scripts/build.ts",
