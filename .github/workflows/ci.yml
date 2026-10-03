@@ -39,7 +39,7 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-      - run: go run github.com/gitleaks/gitleaks/v8@v8.30.1 git --redact --config .gitleaks.toml
+      - run: go run github.com/zricethezav/gitleaks/v8@v8.30.1 git --redact --config .gitleaks.toml
       - run: pipx run --spec zizmor==1.30.1 zizmor --min-severity low --min-confidence medium .github/workflows
       - run: go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.12
       - run: go run github.com/suzuki-shunsuke/pinact/v5/cmd/pinact@v5.0.0 run --check
