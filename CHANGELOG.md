@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.0-beta.3 · 2026-10-04
+
+- Updated passkey libraries to SimpleWebAuthn 14.
+- Updated pinned GitHub Actions used for checks, releases, and documentation.
+- Grouped related dependency updates and kept Node types and Vitest on compatible versions.
+
 ## 0.2.0-beta.2 · 2026-10-04
 
 - Simplified setup instructions, README, and website.

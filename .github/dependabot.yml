@@ -5,7 +5,16 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    ignore:
+      # Keep types aligned with Node 24; change this when upgrading Node.
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
+      # Upgrade together with @cloudflare/vitest-plugin when it supports the next major.
+      - dependency-name: vitest
+        update-types: ['version-update:semver-major']
     groups:
+      passkeys:
+        patterns: ['@simplewebauthn/*']
       development:
         dependency-type: development
         update-types: [minor, patch]
@@ -13,3 +22,6 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    groups:
+      github-actions:
+        patterns: ['actions/*']

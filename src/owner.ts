@@ -195,7 +195,7 @@ export async function ownerApi(request: Request, env: Env): Promise<Response> {
       AND kind IN ('live', 'backfill') ORDER BY received_ms DESC, id DESC LIMIT 1`).first<{ received_ms: number }>();
     const rejected = await env.DB.prepare(`SELECT type, COUNT(*) AS count FROM rejected_records
       WHERE received_ms > ?1 GROUP BY type ORDER BY count DESC LIMIT 20`).bind(Date.now() - 30 * 86400_000).all<{type: string; count: number}>();
-    return Response.json({ version: '0.2.0-beta.2', last_received: successful?.received_ms ?? null,
+    return Response.json({ version: '0.2.0-beta.3', last_received: successful?.received_ms ?? null,
       last_status: last?.status ?? null, writes_today: await writesToday(env.DB, Date.now()),
       rejected_types: rejected.results.map(row => ({ type: Object.hasOwn(SCHEMAS, row.type) ||
         ['active_calories','body_temperature','hydration','nutrition'].includes(row.type) ? row.type : 'unsupported', count: row.count })) });
