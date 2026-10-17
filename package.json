@@ -31,7 +31,7 @@
     "@simplewebauthn/browser": "14.0.0",
     "@simplewebauthn/server": "14.0.3",
     "qrcode": "1.5.4",
-    "zod": "4.6.5"
+    "zod": "4.6.7"
   },
   "license": "MIT",
   "description": "Self-hosted Health Connect to ChatGPT and Claude bridge on Cloudflare Workers",
